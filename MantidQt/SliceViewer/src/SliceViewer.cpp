@@ -2409,7 +2409,7 @@ void SliceViewer::disableOrthogonalAnalysisTools(bool checked) {
   ui.btnDoLine->setDisabled(checked);
   ui.btnSnapToGrid->setDisabled(checked);
   ui.btnClearLine->setDisabled(checked);
-  ui.btnPeakOverlay->setDisabled(checked);
+  //ui.btnPeakOverlay->setDisabled(checked);
   disableAxisForNonorthogonal(checked, QwtPlot::yLeft);
   disableAxisForNonorthogonal(checked, QwtPlot::xBottom);
   m_nonOrthogonalOverlay->update();
@@ -2491,7 +2491,7 @@ SliceViewer::setPeaksWorkspaces(const QStringList &list) {
     // Peak View factory, displays peaks on a peak by peak basis
     auto peakViewFactory = boost::make_shared<PeakViewFactory>(
         m_ws, peaksWS, m_plot, m_plot->canvas(), m_spect->xAxis(),
-        m_spect->yAxis(), numberOfChildPresenters);
+        m_spect->yAxis(), m_dimX, m_dimY, numberOfChildPresenters); //need to update when dimchange
 
     try {
       m_peaksPresenter->addPeaksPresenter(
@@ -2582,6 +2582,7 @@ void SliceViewer::updatePeaksOverlay() {
         Top(yInterval.maxValue()), Bottom(yInterval.minValue()),
         SlicePoint(m_peaksSliderWidget->getSlicePoint()));
     m_peaksPresenter->updateWithSlicePoint(viewableRegion);
+	//m_peaksPresenter- do something here to update dims
   }
 }
 
