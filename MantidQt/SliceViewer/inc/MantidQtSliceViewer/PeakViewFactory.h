@@ -49,6 +49,8 @@ public:
       Mantid::Geometry::PeakTransform_const_sptr transform) const override;
   void swapPeaksWorkspace(
       boost::shared_ptr<Mantid::API::IPeaksWorkspace> &peaksWS) override;
+  void changeNonOrthogonalView() override;
+  bool nonOrthogonalView;
 
 private:
   // Selector for the correct representation of a single peak

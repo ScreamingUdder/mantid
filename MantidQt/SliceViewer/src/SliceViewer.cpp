@@ -2398,7 +2398,7 @@ void SliceViewer::disableOrthogonalAnalysisTools(bool checked) {
   if (ui.btnRebinMode->isChecked()) {
     ui.btnRebinMode->toggle();
   }
-
+  m_peaksPresenter->changeNonOrthogonalView(); //just tells it to switch previous bool
   if (checked) {
     m_nonOrthogonalOverlay->enable();
     adjustSize();
@@ -2409,7 +2409,6 @@ void SliceViewer::disableOrthogonalAnalysisTools(bool checked) {
   ui.btnDoLine->setDisabled(checked);
   ui.btnSnapToGrid->setDisabled(checked);
   ui.btnClearLine->setDisabled(checked);
-  //ui.btnPeakOverlay->setDisabled(checked);
   disableAxisForNonorthogonal(checked, QwtPlot::yLeft);
   disableAxisForNonorthogonal(checked, QwtPlot::xBottom);
   m_nonOrthogonalOverlay->update();

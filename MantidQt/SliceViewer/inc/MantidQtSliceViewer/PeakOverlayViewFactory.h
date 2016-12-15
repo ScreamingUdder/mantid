@@ -62,6 +62,7 @@ public:
   /// Same factory settings for a different peaks workspace
   virtual void swapPeaksWorkspace(
       boost::shared_ptr<Mantid::API::IPeaksWorkspace> &peaksWS) = 0;
+  virtual void changeNonOrthogonalView() = 0;
 };
 
 /// Factory Shared Pointer typedef.

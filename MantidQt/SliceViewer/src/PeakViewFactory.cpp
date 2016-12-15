@@ -79,11 +79,13 @@ PeakViewFactory::PeakViewFactory(Mantid::API::IMDWorkspace_sptr mdWS,
   m_requiresSkewMatrix = API::requiresSkewMatrix(m_mdWS);
   m_dimX = dimX;
   m_dimY = dimY;
+  nonOrthogonalView = false;
   if (m_requiresSkewMatrix) {
 	  Mantid::Kernel::DblMatrix skewMatrix(3, 3, true);
 	  API::provideSkewMatrix(skewMatrix, m_mdWS);
 	  skewMatrix.Invert();
 	  API::transformFromDoubleToCoordT(skewMatrix, m_skewMatrix);
+	  nonOrthogonalView = true;
   }
 }
 
@@ -123,10 +125,10 @@ PeakRepresentation_sptr PeakViewFactory::createSinglePeakRepresentation(
 
   // Create the correct peak representation for the peak shape
   PeakRepresentation_sptr peakRepresentation;
-  if (shapeName == Mantid::DataObjects::PeakShapeSpherical::sphereShapeName()) {
+  if (shapeName == Mantid::DataObjects::PeakShapeSpherical::sphereShapeName() && !nonOrthogonalView) {
     peakRepresentation = createPeakRepresentationSphere(position, peak);
   } else if (shapeName ==
-             Mantid::DataObjects::PeakShapeEllipsoid::ellipsoidShapeName()) {
+             Mantid::DataObjects::PeakShapeEllipsoid::ellipsoidShapeName() && !nonOrthogonalView) {
     peakRepresentation = createPeakRepresentationEllipsoid(position, peak);
   } else {
     peakRepresentation = createPeakRepresentationCross(position, transform);
@@ -138,7 +140,7 @@ PeakRepresentation_sptr PeakViewFactory::createPeakRepresentationCross(
     Mantid::Kernel::V3D position,
     Mantid::Geometry::PeakTransform_const_sptr transform) const {
   const auto zMinAndMax = getZMinAndMax(m_mdWS, transform);
-  if (m_requiresSkewMatrix && API::isHKLDimensions(m_mdWS, m_dimX, m_dimY)) {
+  if (m_requiresSkewMatrix && API::isHKLDimensions(m_mdWS, m_dimX, m_dimY) && nonOrthogonalView) {
 	  auto missingHKL = API::getMissingHKLDimensionIndex(m_mdWS, m_dimX, m_dimY);
 	  position[1];
 
@@ -147,8 +149,6 @@ PeakRepresentation_sptr PeakViewFactory::createPeakRepresentationCross(
 	  API::transformLookpointToWorkspaceCoordGeneric(position, const_cast<Mantid::coord_t*>(m_skewMatrix), m_dimX, m_dimY, missingHKL);
 
   }
-
-
   return std::make_shared<PeakRepresentationCross>(position, zMinAndMax.zMax,
                                                    zMinAndMax.zMin);
 }
@@ -206,6 +206,10 @@ PeakRepresentation_sptr PeakViewFactory::createPeakRepresentationEllipsoid(
 void PeakViewFactory::swapPeaksWorkspace(
     Mantid::API::IPeaksWorkspace_sptr &peaksWS) {
   m_peaksWS = peaksWS;
+}
+
+void PeakViewFactory::changeNonOrthogonalView() {
+	nonOrthogonalView = !nonOrthogonalView;
 }
 
 void PeakViewFactory::setForegroundAndBackgroundColors(

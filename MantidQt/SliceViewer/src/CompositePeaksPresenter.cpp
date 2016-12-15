@@ -67,6 +67,19 @@ bool CompositePeaksPresenter::changeShownDim() {
 }
 
 /**
+Handle NonOrthogonalView toggled on/off
+*/
+bool CompositePeaksPresenter::changeNonOrthogonalView() {
+	if (useDefault()) {
+		return m_default->changeNonOrthogonalView();
+	}
+	bool result = true;
+	for (auto it = m_subjects.begin(); it != m_subjects.end(); ++it) {
+	result &= (*it)->changeNonOrthogonalView();
+	}
+	return result;
+}
+/**
 Determine wheter a given axis label correponds to the free peak axis.
 @return True only if the label is that of the free peak axis.
 */

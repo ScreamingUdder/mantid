@@ -265,6 +265,18 @@ bool ConcretePeaksPresenter::changeShownDim() {
 }
 
 /**
+Respond to changes in the shown dimension.
+@ return True only if this succeeds.
+*/
+bool ConcretePeaksPresenter::changeNonOrthogonalView() {
+	// Reconfigure the mapping tranform.
+	const bool transformSucceeded = true;
+	m_viewFactory->changeNonOrthogonalView();
+	produceViews();
+	return transformSucceeded;
+}
+
+/**
  This method looks at the plotted dimensions (XY) , and work out what indexes
  into the vector HKL, these XYZ dimensions correpond to.
  The indexes can then be used for any future transformation, where the user
