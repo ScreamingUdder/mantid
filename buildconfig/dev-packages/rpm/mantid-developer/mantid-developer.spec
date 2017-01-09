@@ -33,6 +33,7 @@ Requires: hdf-devel
 Requires: hdf5-devel
 Requires: h5py >= 2.3.1
 Requires: jsoncpp-devel >= 0.7.0
+Requires: librdkafka-dev
 Requires: muParser-devel
 Requires: mxml-devel
 Requires: nexus >= 4.2
@@ -127,6 +128,9 @@ required for Mantid development.
 %files
 
 %changelog
+* Mon Jan 09 2017 Lamar Moore <lamar.moore@stfc.ac.uk>
+- Require librdkafka-dev
+
 * Fri Nov 18 2016 Martyn Gigg <martyn.gigg@stfc.ac.uk>
 - Require PyYAML
 
