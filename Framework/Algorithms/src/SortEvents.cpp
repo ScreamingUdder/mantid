@@ -48,8 +48,7 @@ void SortEvents::exec() {
   EventWorkspace_sptr eventW = getProperty("InputWorkspace");
   // And other properties
   std::string sortoption = getPropertyValue("SortBy");
-
-
+  
   //------- EventWorkspace ---------------------------
   const size_t histnumber = eventW->getNumberHistograms();
 
