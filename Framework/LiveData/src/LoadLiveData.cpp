@@ -366,6 +366,7 @@ Workspace_sptr LoadLiveData::appendMatrixWSChunk(Workspace_sptr accumWS,
  * @param ws :: any Workspace. Does nothing if not EventWorkspace.
  */
 void LoadLiveData::doSortEvents(Mantid::API::Workspace_sptr ws) {
+  return;
   EventWorkspace_sptr eventWS = boost::dynamic_pointer_cast<EventWorkspace>(ws);
   if (!eventWS)
     return;

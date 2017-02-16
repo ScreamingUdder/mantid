@@ -153,7 +153,7 @@ void MonitorLiveData::exec() {
       // So the output gets put into the ADS
       loadAlg->setAlwaysStoreInADS(true);
       // Too much logging
-      loadAlg->setLogging(false);
+      loadAlg->setLogging(true);
       loadAlg->initialize();
       // Copy settings from THIS to LoadAlg
       loadAlg->copyPropertyValuesFrom(*this);
