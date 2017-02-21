@@ -1,12 +1,12 @@
 #include "MantidLiveData/LoadLiveData.h"
-#include "MantidLiveData/Exception.h"
-#include "MantidKernel/WriteLock.h"
-#include "MantidKernel/ReadLock.h"
 #include "MantidAPI/AlgorithmManager.h"
 #include "MantidAPI/Workspace.h"
 #include "MantidAPI/WorkspaceGroup.h"
 #include "MantidDataObjects/EventWorkspace.h"
 #include "MantidKernel/CPUTimer.h"
+#include "MantidKernel/ReadLock.h"
+#include "MantidKernel/WriteLock.h"
+#include "MantidLiveData/Exception.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
@@ -101,8 +101,8 @@ LoadLiveData::runProcessing(Mantid::API::Workspace_sptr inputWS,
       for (auto prop : proplist) {
         if ((prop->direction() == 0) && (!inputPropertyWorkspaceFound)) {
           if (boost::ends_with(prop->type(), "Workspace")) {
-            g_log.information() << "Using " << prop->name()
-                                << " as the input property.\n";
+            g_log.information()
+                << "Using " << prop->name() << " as the input property.\n";
             alg->setPropertyValue(prop->name(), inputName);
             inputPropertyWorkspaceFound = true;
           }
@@ -366,7 +366,8 @@ Workspace_sptr LoadLiveData::appendMatrixWSChunk(Workspace_sptr accumWS,
  * @param ws :: any Workspace. Does nothing if not EventWorkspace.
  */
 void LoadLiveData::doSortEvents(Mantid::API::Workspace_sptr ws) {
-  EventWorkspace_sptr eventWS = boost::dynamic_pointer_cast<EventWorkspace>(ws);
+  /*EventWorkspace_sptr eventWS =
+  boost::dynamic_pointer_cast<EventWorkspace>(ws);
   if (!eventWS)
     return;
   CPUTimer tim;
@@ -374,7 +375,9 @@ void LoadLiveData::doSortEvents(Mantid::API::Workspace_sptr ws) {
   alg->setProperty("InputWorkspace", eventWS);
   alg->setPropertyValue("SortBy", "X Value");
   alg->executeAsChildAlg();
-  g_log.debug() << tim << " to perform SortEvents on " << ws->getName() << '\n';
+  g_log.debug() << tim << " to perform SortEvents on " << ws->getName() <<
+  '\n';*/
+  return;
 }
 
 //----------------------------------------------------------------------------------------------
