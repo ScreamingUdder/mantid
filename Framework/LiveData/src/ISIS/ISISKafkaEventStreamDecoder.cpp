@@ -285,8 +285,10 @@ void ISISKafkaEventStreamDecoder::captureImplExcept() {
   m_extractedEndRunData = true;
   std::string buffer;
   while (!m_interrupt) {
-    if (getBufferMemorySizeBytes() > MAX_BUFFER_SIZE)
+    if (getBufferMemorySizeBytes() > MAX_BUFFER_SIZE) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(50));
       continue;
+    }
     // Pull in events
     m_eventStream->consumeMessage(&buffer);
     // No events, wait for some to come along...
