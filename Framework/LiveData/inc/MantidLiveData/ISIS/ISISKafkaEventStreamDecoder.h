@@ -77,6 +77,7 @@ private:
   void captureImplExcept();
 
   void initLocalCaches();
+  size_t getBufferMemorySizeBytes() noexcept;
   DataObjects::EventWorkspace_sptr createBufferWorkspace(const size_t nspectra,
                                                          const int32_t *spec,
                                                          const int32_t *udet,
@@ -133,6 +134,8 @@ private:
   bool m_runStatusSeen;
 
   std::atomic<bool> m_extractedEndRunData;
+
+  const size_t MAX_BUFFER_SIZE;
 };
 
 } // namespace LiveData

@@ -120,11 +120,11 @@ using Kernel::DateAndTime;
 ISISKafkaEventStreamDecoder::ISISKafkaEventStreamDecoder(
     std::shared_ptr<IKafkaBroker> broker, const std::string &eventTopic,
     const std::string &runInfoTopic, const std::string &spDetTopic)
-    : m_broker(broker), m_eventTopic(eventTopic),
-      m_runInfoTopic(runInfoTopic), m_spDetTopic(spDetTopic),
-      m_interrupt(false), m_localEvents(), m_specToIdx(), m_runStart(),
-      m_runNumber(-1), m_thread(), m_capturing(false), m_exception(),
-      m_extractWaiting(false) {}
+    : m_broker(broker), m_eventTopic(eventTopic), m_runInfoTopic(runInfoTopic),
+      m_spDetTopic(spDetTopic), m_interrupt(false), m_localEvents(),
+      m_specToIdx(), m_runStart(), m_runNumber(-1), m_thread(),
+      m_capturing(false), m_exception(), m_extractWaiting(false),
+      MAX_BUFFER_SIZE(1073741824) {}
 
 /**
  * Destructor.
@@ -285,6 +285,10 @@ void ISISKafkaEventStreamDecoder::captureImplExcept() {
   m_extractedEndRunData = true;
   std::string buffer;
   while (!m_interrupt) {
+    if (getBufferMemorySizeBytes() > MAX_BUFFER_SIZE) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(50));
+      continue;
+    }
     // Pull in events
     m_eventStream->consumeMessage(&buffer);
     // No events, wait for some to come along...
@@ -436,6 +440,17 @@ void ISISKafkaEventStreamDecoder::initLocalCaches() {
     // A clone should be cheap here as there are no events yet
     m_localEvents[i] = eventBuffer->clone();
   }
+}
+
+size_t ISISKafkaEventStreamDecoder::getBufferMemorySizeBytes() noexcept {
+  size_t size = 0;
+  std::lock_guard<std::mutex> lock(m_mutex);
+
+  for (auto &wksp : m_localEvents) {
+    size += wksp->getMemorySize();
+  }
+
+  return size;
 }
 
 /**
