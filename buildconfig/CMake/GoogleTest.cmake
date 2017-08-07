@@ -23,21 +23,21 @@ else()
                  ${CMAKE_BINARY_DIR}/googletest-download/CMakeLists.txt)
   execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
                   RESULT_VARIABLE result
-                  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/googletest-download )
+                  WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
   if(result)
     message(FATAL_ERROR "CMake step for googletest failed: ${result}")
   endif()
   execute_process(COMMAND ${CMAKE_COMMAND} --build .
                   RESULT_VARIABLE result
-                  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/googletest-download )
+                  WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
   if(result)
     message(FATAL_ERROR "Build step for googletest failed: ${result}")
   endif()
 
   # Add googletest directly to our build. This defines
   # the gtest and gtest_main targets.
-  add_subdirectory(${CMAKE_BINARY_DIR}/googletest-src
-                   ${CMAKE_BINARY_DIR}/googletest-build)
+  add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
+                   "${CMAKE_BINARY_DIR}/googletest-build")
 
   # Hide targets from "all" and put them in the UnitTests folder in MSVS
   foreach( target_var gmock gtest gmock_main gtest_main )
@@ -54,10 +54,10 @@ else()
   set( GTEST_LIBRARIES optimized ${GTEST_LIB} debug ${GTEST_LIB_DEBUG} )
 
   find_path ( GMOCK_INCLUDE_DIR gmock/gmock.h
-              PATHS ${CMAKE_BINARY_DIR}/googletest-src/googlemock/include
+              PATHS "${CMAKE_BINARY_DIR}/googletest-src/googlemock/include"
               NO_DEFAULT_PATH )
   find_path ( GTEST_INCLUDE_DIR gtest/gtest.h
-              PATHS ${CMAKE_BINARY_DIR}/googletest-src/googletest/include
+              PATHS "${CMAKE_BINARY_DIR}/googletest-src/googletest/include"
               NO_DEFAULT_PATH )
 
 
