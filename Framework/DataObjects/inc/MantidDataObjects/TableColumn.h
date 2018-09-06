@@ -126,6 +126,9 @@ public:
   void read(const size_t index, std::istringstream &in) override;
   /// Type check
   bool isBool() const override { return typeid(Type) == typeid(API::Boolean); }
+  bool isNumber() const override {
+    return std::is_convertible<Type, double>::value;
+  }
   /// Memory used by the column
   long int sizeOfData() const override {
     return static_cast<long int>(m_data.size() * sizeof(Type));
@@ -285,7 +288,7 @@ public:
                        : !(m_data[i] < m_data[j] || m_data[i] == m_data[j]);
   }
 };
-}
+} // namespace
 
 /// Sort a vector of indices according to values in corresponding cells of this
 /// column. @see Column::sortIndex

@@ -127,17 +127,19 @@ mtd_add_qt_library (TARGET_NAME MantidQtWidgetsInstrumentView
     ${POCO_LIBRARIES}
     ${Boost_LIBRARIES}
     ${PYTHON_LIBRARIES}
-    ${OPENGL_LIBRARIES}
+    ${OPENGL_gl_LIBRARY}
+    ${OPENGL_glu_LIBRARY}
   QT4_LINK_LIBS
     Qt4::QtOpenGL
     Qwt5
   MTD_QT_LINK_LIBS
     MantidQtWidgetsCommon
     MantidQtWidgetsLegacyQwt
+  INSTALL_DIR
+    ${LIB_DIR}
+  OSX_INSTALL_RPATH
+    @loader_path/../MacOS
+    @loader_path/../Libraries
+  LINUX_INSTALL_RPATH
+    "\$ORIGIN/../${LIB_DIR}"
 )
-
-if (OSX_VERSION VERSION_GREATER 10.8)
-  set_target_properties(MantidQtWidgetsInstrumentViewQt4 PROPERTIES INSTALL_RPATH "@loader_path/../MacOS;@loader_path/../Libraries")
-elseif ( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" )
-  set_target_properties(MantidQtWidgetsInstrumentViewQt4 PROPERTIES INSTALL_RPATH "\$ORIGIN/../${LIB_DIR}")
-endif ()

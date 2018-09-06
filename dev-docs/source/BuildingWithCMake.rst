@@ -64,6 +64,7 @@ From the command line
 * If you want to use a specific generator (run ``cmake --help`` for a list of available generators for your platform), use the ``-G`` option, e.g. ``cmake -G"NMake Makefiles" /path/to/Mantid``.
 * If you want to set the build type (e.g. Release, Debug) you can run cmake with the ``-i`` option or by passing the argument ``-DCMAKE_BUILD_TYPE=Debug`` to cmake. The default is Release.
 * Please note that the executable is called ``cmake3`` on Red Hat 7 / CentOS7.
+* On Red Hat 7 / CentOS7 mantid uses `devtoolset-7 <https://www.softwarecollections.org/en/scls/rhscl/devtoolset-7/>`_. This means that you need to wrap your initial ``cmake`` command as ``scl enable devtoolset-7 "cmake3 /path/to/source"``
 
 From the CMake gui
 ------------------
@@ -92,8 +93,15 @@ The nice feature in this context is that it has CMake support built in. So you c
 Building and working with CMake
 ###############################
 
-* You can now start your IDE and point to or import the generated solution/project files or run ``make``, ``nmake`` or ``jom`` to build the whole of Mantid (sub-targets are available - run ``make help`` to see them).
-* '''Visual Studio users''': Use the ``visual-studio.bat`` generated in the build directory to start the IDE. This sets up the environment correctly.
+Building from IDE:
+
+* Windows using Visual studio: Use the ``visual-studio.bat`` generated in the build directory to start the IDE. This sets up the environment correctly.
+* Otherwise start your IDE and point to or import the generated solution/project files
+
+Command line: run ``make``, ``nmake`` or ``jom`` to build the whole of Mantid (sub-targets are available - run ``make help`` to see them).
+
+Working with CMake:
+
 * You should typically never have to run CMake manually again (unless you want to create a new, separate build) - it will be run automatically if one of the CMake input files changes.
 * It should be rare that you will need to edit the CMake build (``CMakeLists.txt``) files. The most common occurrence will be when you add a new file. This must be added to the corresponding CMakeLists file, e.g. if you add a file to Kernel, edit ``Mantid/Framework/Kernel/CMakeLists.txt`` to add the source, header and test files to the long lists of filepaths at the top of the file.
 * The class maker utility (:ref:`ToolsOverview`) can edit the ``CMakeList.txt`` for you automatically

@@ -47,6 +47,8 @@ public:
   /// Specialized type check
   bool isBool() const override;
 
+  bool isNumber() const override;
+
   /// Must return overall memory size taken by the column.
   long int sizeOfData() const override;
 
@@ -85,7 +87,7 @@ private:
   void setPeakHKLOrRunNumber(const size_t index, const double val);
 };
 
-} // namespace Mantid
 } // namespace DataObjects
+} // namespace Mantid
 
 #endif /* MANTID_DATAOBJECTS_PEAKCOLUMN_H_ */

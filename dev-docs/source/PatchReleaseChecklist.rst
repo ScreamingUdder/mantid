@@ -33,9 +33,9 @@ Authorisation
 Development
 ###########
 
-The patch release will be prepared based off the branch used to
-construct to most recent major point release, e.g. ``release-v3.9``
-would be used for any ``3.9.x`` patches. Changes for the patch should be made using the standard GitHub
+The patch release will be prepared based off the tag used to mark
+the last minor release. A branch called ``release-next`` will be created from this tag.
+Changes for the patch should be made using the standard GitHub
 workflow for merging code with ``master``. The issue and pull request should then have the ``PatchCandidate`` label applied to them. These
 commits will then be cherry picked from ``master`` on to the release branch.
 
@@ -47,8 +47,7 @@ version of the last major/patch release. It is not a requirement but
 advised to unfix the patch number while the patch is being compiled.
 This prevents the nightly builds from generating a collection of packages that have
 exactly the same version. The patch number can be unfixed by commenting the line in
-https://www.github.com/mantidproject/mantid/blob/release-vX.Y/buildconfig/CMake/VersionNumber.cmake#L9, where
-``X.Y`` should be replace with the appropriate numbers.
+https://www.github.com/mantidproject/mantid/blob/release-next/buildconfig/CMake/VersionNumber.cmake#L9.
 
 Release Notes
 -------------
@@ -92,10 +91,13 @@ updated to the patch milestone.
 Nightly Builds
 ##############
 
-The `Jenkins Release Pipeline <http://builds.mantidproject.org/view/Release%20Pipeline/>`__ contains jobs
-that check for changes on the current release branch each night (00:00 GMT). Any detected changes will cause a clean build of the code followed
-by a run of the system tests. These jobs should be checked each morning
-to confirm that everything is green.
+The `release pipeline <release-pipeline>`_ contains jobs
+that check for changes on the current release branch each night (00:00 GMT).
+Any detected changes will cause a clean build of the code followed by a run
+of the system tests. The Linux clean builds should have the `PACKAGE_SUFFIX` set
+to `nightly` while testing the patch.
+
+These jobs should be checked each morning to confirm that everything is green.
 
 Release Day
 ###########
@@ -104,11 +106,9 @@ On the day of release a few steps are required:
 
 * update the patch version:
 * navigate to
-  {{site.mantidrepo}}/blob/release-X.Y./buildconfig/CMake/VersionNumber.cmake,
-  where ``X`` & ``Y`` are the major and minor release versions
-  respectively.
+  https://www.github.com/mantidproject/mantid/blob/release-next/buildconfig/CMake/VersionNumber.cmake
 * edit the ``VERSION_PATCH`` to the required number for the patch and
-  commit the result.
+  commit the result
 * run a manual build of all of the OS jobs under {{
   site.mantidreleasebuilds }} and when asked for a suffix use an empty
   string
@@ -125,13 +125,13 @@ particular the issues intended to be fixed should be tested.
 
 Once the testing has passed:
 
-* Use the manual deploy job at {{ site.mantidreleasebuilds }} to deploy
+* Use the manual deploy job at `release pipeline <release-pipeline>`_ to deploy
   packages and documentation to the public web.
 * The windows binary will **not** be deployed and must be signed by
   someone at ISIS and uploaded to sourceforge manually
 * Put packages on GitHub
 * RHEL 7 only: Build the suffix-package ``mantidXY`` by running another
-  clean RHEL 7 build at {{ site.mantidreleasebuilds }} but use the
+  clean RHEL 7 build from the `release pipeline <release-pipeline>`_ but use the
   suffix XY, where ``X`` is the major version and ``Y`` is the minor
   version (currently used at SNS)
 * Have someone at the SNS follow the instructions
@@ -149,3 +149,7 @@ Once the testing has passed:
 * Add topic to the news page on the `forum <http://forum.mantidproject.org/>`__
 * Close the release milestone in github
 * Remove the patch candidate tag from pull requests (if not already done)
+
+.. Link definitions
+
+.. _release-pipeline: http://builds.mantidproject.org/view/Release%20Pipeline/

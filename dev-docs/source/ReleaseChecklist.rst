@@ -9,8 +9,7 @@ Release Checklist
 
 These are the steps involved in performing a full Mantid release. To
 request or perform a patch release look at the
-`patch release
-checklist <%7B%7B%20site.url%20%7D%7D/release_checklist/patch/>`__
+:ref:`patch release checklist <PatchReleaseChecklist>`.
 
 Timeline
 ########
@@ -72,7 +71,7 @@ Unscripted and Final Testing (technical tasks)
    `merge\_release\_into\_master <http://builds.mantidproject.org/view/All/job/merge_release_into_master/>`__
 *  Check state of all open pull requests for this milestone and update
    the base branch to the new release branch accordingly.
-*  Create a skeleton set of release notes for the next version
+*  Create a skeleton set of release notes for the next version using the `python helper tool <https://github.com/mantidproject/mantid/blob/master/tools/release_generator/release.py>`_
 *  Perform unscripted testing following the instructions described
    `here <https://www.mantidproject.org/Unscripted_Manual_Testing>`__.
 
@@ -138,10 +137,10 @@ Once the unscripted testing has passed:
 * Disable release deploy jobs by executing
   `close-release-testing <http://builds.mantidproject.org/view/All/job/close-release-testing>`__
   job.
-* On the ``release-vX.Y`` branch, update major & minor versions
+* On the ``release-next`` branch, update major & minor versions
   accordingly in ``buildconfig/CMake/VersionNumber.cmake``. Also
   uncomment ``VERSION_PATCH`` and set it to ``0``.
-* Merge ``release`` branch back to ``master``
+* Merge ``release-next`` branch back to ``master``
 * Comment out patch number on ``master`` branch
 * Draft a `new
   release <https://github.com/mantidproject/mantid/releases>`__ on
